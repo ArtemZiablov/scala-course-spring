@@ -10,7 +10,7 @@ lazy val root = project
   .settings(commonSettings: _*)
 
 lazy val commonSettings = Seq(
-  crossScalaVersions := Seq("2.13", "3.0.0", "3.1.1"),
+  crossScalaVersions := Seq("3.1.1"),
   libraryDependencies ++= dependencies,
   testFrameworks += new TestFramework("munit.Framework"),
   scalacOptions ++= Seq(

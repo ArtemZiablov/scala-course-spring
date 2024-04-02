@@ -35,7 +35,7 @@ object adt:
       Make sure that if an internal function is failed with an exception
       the exception is not thrown but the case for an error is returned
      */
-    def map = ???
+    def map = ??? // TODO
       
   // Companion object to define constructor
   object ErrorOr:
