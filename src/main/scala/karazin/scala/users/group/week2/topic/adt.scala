@@ -88,10 +88,10 @@ object adt:
         case Option.None    => ifEmpty
         case Option.Some(v) => f(v)
 
-    def foldLeft[Q](z: Q)(op: (Q, V) => Q): Q =
+    def foldLeft[Q](acc: Q)(op: (Q, V) => Q): Q =
       this match
-        case Option.None    => z
-        case Option.Some(v) => op(z, v)
+        case Option.None    => acc
+        case Option.Some(v) => op(acc, v)
 
   object Option:
     /** An `Option`` factory which creates `Some(x)`` if the argument is not null,
