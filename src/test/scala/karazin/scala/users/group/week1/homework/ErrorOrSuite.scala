@@ -32,7 +32,7 @@ class ErrorOrSuite extends ScalaCheckSuite {
   }
 
   // Check the property when ErrorOr represents some non-error case but function returns error case
-  property("flatmap returns Error if `f` returns ????") {
+  property("flatmap returns Error if `f` returns Error") {
     forAll { (value: Int, throwable: Throwable) =>
       ErrorOr(value).flatMap(_ => throw throwable)  == Error(throwable)
     }
@@ -54,7 +54,7 @@ class ErrorOrSuite extends ScalaCheckSuite {
   }
 
   // Check the property when ErrorOr represents some non-error case and function returns non-error case
-  property("map returns Value if `f` returns ???") {
+  property("map returns Value if `f` returns Value") {
     forAll { (v: Int, f: Int => String) =>
       Value(v).map(v => f(v)) == Value(f(v))
     }
