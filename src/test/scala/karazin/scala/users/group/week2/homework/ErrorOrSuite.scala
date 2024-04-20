@@ -132,7 +132,7 @@ class ErrorOrSuite extends ScalaCheckSuite {
       """|error:
          |Cannot prove that Int <:< karazin.scala.users.group.week2.homework.adt.ErrorOr[U]
          |
-         |where:    U is a type variable with constraint
+         |where:    U is a type variable with constraint 
          |.
          |ErrorOr(42).flatten
          |                  ^""".stripMargin
