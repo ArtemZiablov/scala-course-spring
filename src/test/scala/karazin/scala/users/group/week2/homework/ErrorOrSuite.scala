@@ -126,13 +126,13 @@ class ErrorOrSuite extends ScalaCheckSuite {
   }
 
   // Check the property when a nested value is not an ErrorOr
-  property("flatten compilation fails if applied to a none-??? nested") {
+  property("flatten compilation fails if applied to a none-ErrorOr nested") {
     assertNoDiff(
       compileErrors("ErrorOr(42).flatten"),
       """|error:
          |Cannot prove that Int <:< karazin.scala.users.group.week2.homework.adt.ErrorOr[U]
          |
-         |where:    U is a type variable with constraint 
+         |where:    U is a type variable with constraint
          |.
          |ErrorOr(42).flatten
          |                  ^""".stripMargin
