@@ -20,7 +20,7 @@ class ErrorOrSuite extends ScalaCheckSuite {
 
   property("applying value which throws an exception returns Error") {
     forAll { (throwable: Throwable) =>
-      ErrorOr.apply(throw throwable) == Error(throwable)
+      ErrorOr(throw throwable) == Error(throwable)
     }
   }
 

@@ -9,10 +9,7 @@ package karazin.scala.users.group.week1.homework
 object adt:
   
   enum ErrorOr[+V]:
-    
-    // Added to make it compilable. Remove it.
-    /*case DummyCase*/
-    
+
     /* 
       Two case must be defined: 
       * a case for a regular value
