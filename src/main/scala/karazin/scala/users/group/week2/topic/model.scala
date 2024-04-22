@@ -10,7 +10,7 @@ object model:
   object User:
     opaque type UserId <: UUID = UUID
     object UserId:
-      def apply(userId: UserId): UserId = userId
+      def apply(userId: UUID): UserId = userId
       def generate: UserId = UserId(UUID.randomUUID())
   
   case class UserProfile(userId: UserId)
@@ -19,7 +19,7 @@ object model:
     opaque type PostId <: UUID = UUID
 
     object PostId:
-      def apply(postId: PostId): PostId = postId
+      def apply(postId: UUID): PostId = postId
       def generate: PostId = PostId(UUID.randomUUID())  
   
   case class Post(userId: UserId, postId: PostId)

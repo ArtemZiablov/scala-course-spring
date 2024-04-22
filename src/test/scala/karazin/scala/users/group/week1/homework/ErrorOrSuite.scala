@@ -2,61 +2,77 @@ package karazin.scala.users.group.week1.homework
 
 import munit.ScalaCheckSuite
 import org.scalacheck.Prop.*
+import adt.ErrorOr
+import adt.ErrorOr.Value
+import adt.ErrorOr.Error
+import org.scalacheck.Gen
+import karazin.scala.users.group.model.DummyError
+import java.lang
 
 class ErrorOrSuite extends ScalaCheckSuite {
 
-  // Fix ??? according to your naming
-  property("applying pure value returns ???") {
-    false
+  // Fix Value according to your naming
+  property("applying pure value returns Value") {
+    forAll { (v: String) =>
+      ErrorOr(v) == Value(v)
+    }
   }
 
-  // Fix ??? according to your naming
-  property("applying value which throws an exception returns ???") {
-    false
+  property("applying value which throws an exception returns Error") {
+    forAll { (throwable: Throwable) =>
+      ErrorOr(throw throwable) == Error(throwable)
+    }
   }
 
-  // Fix ??? according to your naming
   // Check the property when ErrorOr represents some non-error case and function returns non-error case
-  property("flatmap returns ??? if `f` returns ???") {
-    false
+  property("flatmap returns Value if `f` returns Value") {
+    forAll { (v: Int, f: Int => String) =>
+      ErrorOr(v).flatMap(v => ErrorOr(f(v))) == ErrorOr(f(v))
+    }
   }
 
-  // Fix ???? according to your naming
   // Check the property when ErrorOr represents some non-error case but function returns error case
-  property("flatmap returns ???? if `f` returns ????") {
-    false
+  property("flatmap returns Error if `f` returns Error") {
+    forAll { (value: Int, throwable: Throwable) =>
+      ErrorOr(value).flatMap(_ => throw throwable)  == Error(throwable)
+    }
   }
 
-  // Fix ??? according to your naming
   // Check property when ErrorOr represents some non-error case
   // and function returns non-error case but execution of function fails with some exception
-  property("flatmap returns ??? if `f` fails") {
-    false
+  property("flatmap returns Error if `f` fails") {
+    forAll { (v: Int) =>
+      Value(v).flatMap(v => throw DummyError) == Error(DummyError)
+    }
   }
 
-  // Fix ??? according to your naming
   // Check the property when ErrorOr represents some error case
-  property("flatmap returns ??? immediately") {
-    false
+  property("flatmap returns Error immediately") {
+    propBoolean {
+      Error(DummyError).flatMap(_ => throw IllegalArgumentException()) == Error(DummyError)
+    }
   }
 
-  // Fix ??? according to your naming
   // Check the property when ErrorOr represents some non-error case and function returns non-error case
-  property("map returns ??? if `f` returns ???") {
-    false
+  property("map returns Value if `f` returns Value") {
+    forAll { (v: Int, f: Int => String) =>
+      Value(v).map(v => f(v)) == Value(f(v))
+    }
   }
 
-  // Fix ??? according to your naming
   // Check property when ErrorOr represents some non-error case
   // and function returns non-error case but execution of function fails with some exception
-  property("map returns ??? if `f` fails") {
-    false
+  property("map returns Error if `f` fails") {
+    forAll { (v: Int) =>
+      Value(v).map(v => throw DummyError) == Error(DummyError)
+    }
   }
 
-  // Fix ??? according to your naming
   // Check the property when ErrorOr represents some error case
-  property("map returns ??? immediately") {
-    false
+  property("map returns Error immediately") {
+    propBoolean {
+      Error(DummyError).map(_ => throw IllegalArgumentException()) == Error(DummyError)
+    }
   }
 
 }

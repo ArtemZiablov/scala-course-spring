@@ -20,30 +20,28 @@ class OptionSuite extends ScalaCheckSuite {
 
   property("flatmap returns Some if applied to Some and the function returns Some") {
     forAll { (v: Int, f: Int => String) =>
-      Option(v).flatMap(v => Option(f(v))) == Option(f(v))
+      Option(v).flatMap(_ => Option(f(v))) == Option(f(v))
     }
   }
 
   property("flatmap returns None if applied to Some but the function returns None") {
     forAll { (v: Int) =>
-      Option(v).flatMap(v => None) == None
+      Option(v).flatMap(_ => None) == None
     }
   }
 
   property("flatmap returns None immediately") {
-    None.flatMap(v => throw DummyError) == None
+    None.flatMap(_ => throw DummyError) == None
   }
 
-  property("flatmap returns Some if applied to Some") {
+  property("map returns Some if applied to Some") {
     forAll { (v: Int, f: Int => String) =>
       Option(v).map(v => f(v)) == Option(f(v))
     }
   }
 
   property("map returns None immediately") {
-    propBoolean {
-      None.map(v => throw DummyError) == None
-    }
+    None.map(_ => throw DummyError) == None
   }
 
   property("withFilter returns Some if applied to Some and predicate is true") {
@@ -58,17 +56,10 @@ class OptionSuite extends ScalaCheckSuite {
     }
   }
 
-  property("withFilter returns None if applied to None and predicate is true") {
-    forAll { (v: String) =>
-      None.withFilter(_ => true) == None
-    }
+  property("withFilter returns None if applied to None immediately") {
+    None.withFilter(_ => throw DummyError) == None
   }
 
-  property("withFilter returns None if applied to None and predicate is false") {
-    forAll { (v: String) =>
-      None.withFilter(_ => false) == None
-    }
-  }
 
   property("flatten returns Some if applied to a nested Some") {
     forAll { (v: String) =>
@@ -77,15 +68,11 @@ class OptionSuite extends ScalaCheckSuite {
   }
 
   property("flatten returns None if applied to a nested None") {
-    forAll { (v: String) =>
-      Option(None).flatten == None
-    }
+    Option(None).flatten == None
   }
 
   property("flatten returns None if applied to None") {
-    forAll { (v: String) =>
-      None.flatten == None
-    }
+    None.flatten == None
   }
 
   property("flatten compilation fails if applied to a none-Option nested") {
@@ -111,22 +98,18 @@ class OptionSuite extends ScalaCheckSuite {
   }
 
   property("foreach ignores side effect if applied to None") {
-    propBoolean {
-      var sideEffect = true
-      None.foreach(_ => sideEffect = false)
-      sideEffect
-    }
+    None.foreach(_ => throw DummyError)
   }
   
   property("fold returns the result of the function application if applied to Some") {
-    forAll { (v: Int, default: Int, f: Int => String) =>
-      Option(v).fold(default)(f) == f(v)
+    forAll { (v: Int, ifEmpty: Int, f: Int => String) =>
+      Option(v).fold(ifEmpty)(f) == f(v)
     }
   }
 
   property("fold returns default if applied to None") {
-    forAll { (default: Int, f: Int => String) =>
-      None.fold(default)(f) == default
+    forAll { (ifEmpty: Int) =>
+      None.fold(ifEmpty)(_ => throw DummyError) == ifEmpty
     }
   }
 
@@ -138,8 +121,8 @@ class OptionSuite extends ScalaCheckSuite {
   }
 
   property("foldLeft returns acc if applied to None") {
-    forAll { (acc: Int, f: (Int, Int) => Int) =>
-      None.foldLeft(acc)(f) == acc
+    forAll { (acc: Int) =>
+      None.foldLeft(acc)((_, _) => throw DummyError) == acc
     }
   }
 
