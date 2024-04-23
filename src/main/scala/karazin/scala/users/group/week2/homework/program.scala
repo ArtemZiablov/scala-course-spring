@@ -20,15 +20,30 @@ object program:
       profile <- getUserProfile(apiKey)
       posts <- getPosts(profile.userId)
       postsView <- posts.foldLeft(ErrorOr(List.empty[PostView])) {
-        (acc, elem) => acc flatMap
-          (list => getPostView(elem)(commentsFilter, likesFilter) map (list :+ _))
+        (acc, elem) =>
+          acc flatMap
+            (list => getPostView(elem)(commentsFilter, likesFilter) map (list :+ _))
       }
     yield postsView
 
   // Desugared
   def getPostsViewDesugared(apiKey: String)(commentsFilter: List[Comment] => Boolean,
                                             likesFilter: List[Like] => Boolean): ErrorOr[List[PostView]] =
-    ???
+    getUserProfile(apiKey) flatMap { profile =>
+      getPosts(profile) map { posts =>
+        posts.foldLeft(ErrorOr(List.empty[PostView])) {
+          (acc, elem) =>
+            acc flatMap (list => 
+              getComments(post.postId).withFilter(commentsFilter) flatMap { comments =>
+                getLikes(post.postId).withFilter(likesFilter) flatMap { likes =>
+                  getShares(post.postId) map { shares =>
+                    PostView(post, comments, likes, shares)
+                  }
+                }
+              } map (list :+ _))
+        }
+      }
+    }
 
   /*
     Getting view for a particular user's post
