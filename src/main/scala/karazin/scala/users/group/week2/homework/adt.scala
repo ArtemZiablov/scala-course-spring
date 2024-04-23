@@ -64,7 +64,7 @@ object adt:
     def withFilter(p: V => Boolean): ErrorOr[V] =
       this match
         case Error(err) => Error(err)
-        case Value(v)   => if p(v) then Value(v) else Error(new IllegalArgumentException("Predicate is wrong"))
+        case Value(v)   => if p(v) then Value(v) else Error(IllegalArgumentException("Predicate is wrong"))
 
     def flatten[U](using ev: V <:< ErrorOr[U]): ErrorOr[U] =
       this match
