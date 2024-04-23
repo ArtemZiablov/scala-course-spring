@@ -1,10 +1,11 @@
 package karazin.scala.users.group.week2.homework
 
-import java.util.UUID
-
 // Do not forget to import custom implementation
 import karazin.scala.users.group.week2.homework.adt.*
 import karazin.scala.users.group.week2.homework.model.*
+import karazin.scala.users.group.week2.homework.model.ApiKey.ApiKey
+import karazin.scala.users.group.week2.homework.model.Post.PostId
+import karazin.scala.users.group.week2.homework.model.User.UserId
 
 /*
   Dummy services
@@ -13,8 +14,8 @@ import karazin.scala.users.group.week2.homework.model.*
  */
 object services:
   
-  def getUserProfile(apiKey: String): ErrorOr[UserProfile] = ???
-  def getPosts(userId: UUID): ErrorOr[List[Post]] = ???
-  def getComments(postId: UUID): ErrorOr[List[Comment]] = ??? 
-  def getLikes(postId: UUID): ErrorOr[List[Like]] = ???
-  def getShares(postId: UUID): ErrorOr[List[Share]] = ???
+  def getUserProfile(apiKey: ApiKey): ErrorOr[UserProfile] = ???
+  def getPosts(userId: UserId): ErrorOr[List[Post]] = ???
+  def getComments(postId: PostId): ErrorOr[List[Comment]] = ??? 
+  def getLikes(postId: PostId): ErrorOr[List[Like]] = ???
+  def getShares(postId: PostId): ErrorOr[List[Share]] = ???

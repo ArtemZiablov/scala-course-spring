@@ -34,6 +34,12 @@ object model:
 
       def generate: PostId = PostId(UUID.randomUUID())
 
+  object ApiKey:
+    opaque type ApiKey <: String = String
+
+    object ApiKey:
+      def apply(apiKey: ApiKey): ApiKey = apiKey
+
   // Implement and use PostId instead of UUID
   case class Post(userId: UserId, postId: PostId)
   case class Comment(userId: UserId, postId: PostId)
