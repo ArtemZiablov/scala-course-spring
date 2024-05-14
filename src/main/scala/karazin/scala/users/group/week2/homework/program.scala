@@ -4,6 +4,7 @@ package karazin.scala.users.group.week2.homework
 
 import karazin.scala.users.group.week2.homework.adt.*
 import karazin.scala.users.group.week2.homework.model.*
+import karazin.scala.users.group.week2.homework.model.ApiKey.ApiKey
 import karazin.scala.users.group.week2.homework.services.*
 
 object program:
@@ -14,7 +15,7 @@ object program:
   
    Do not change the result type, it must be `ErrorOr[List[PostView]]`
   */
-  def getPostsViews(apiKey: String)(commentsFilter: List[Comment] => Boolean,
+  def getPostsViews(apiKey: ApiKey)(commentsFilter: List[Comment] => Boolean,
                                     likesFilter: List[Like] => Boolean): ErrorOr[List[PostView]] =
     for
       profile <- getUserProfile(apiKey)
@@ -27,24 +28,25 @@ object program:
     yield postsView
 
   // Desugared
-  def getPostsViewDesugared(apiKey: String)(commentsFilter: List[Comment] => Boolean,
+  def getPostsViewDesugared(apiKey: ApiKey)(commentsFilter: List[Comment] => Boolean,
                                             likesFilter: List[Like] => Boolean): ErrorOr[List[PostView]] =
     getUserProfile(apiKey) flatMap { profile =>
-      getPosts(profile) map { posts =>
+      getPosts(profile.userId) flatMap { posts =>
         posts.foldLeft(ErrorOr(List.empty[PostView])) {
           (acc, elem) =>
-            acc flatMap (list => 
-              getComments(post.postId).withFilter(commentsFilter) flatMap { comments =>
-                getLikes(post.postId).withFilter(likesFilter) flatMap { likes =>
-                  getShares(post.postId) map { shares =>
-                    PostView(post, comments, likes, shares)
+            acc flatMap { list =>
+              getComments(elem.postId).withFilter(commentsFilter) flatMap { comments =>
+                getLikes(elem.postId).withFilter(likesFilter) flatMap { likes =>
+                  getShares(elem.postId) map { shares =>
+                    PostView(elem, comments, likes, shares)
                   }
                 }
-              } map (list :+ _))
+              } map (list :+ _)
+            }
         }
       }
     }
-
+  
   /*
     Getting view for a particular user's post
     Provide an argument and a result type
