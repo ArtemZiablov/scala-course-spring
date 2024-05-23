@@ -5,7 +5,7 @@ package karazin.scala.users.group.week4.homework
 import cats.data.EitherT
 import cats.implicits.*
 import cats.syntax.all.*
-import karazin.scala.users.group.week4.either.withFilter
+import karazin.scala.users.group.week4.homework.either.withFilter
 import karazin.scala.users.group.week4.homework.model.*
 import karazin.scala.users.group.week4.homework.model.Post.PostId
 import karazin.scala.users.group.week4.homework.model.User.UserId
