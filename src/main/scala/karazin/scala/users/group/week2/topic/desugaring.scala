@@ -1,6 +1,6 @@
 package karazin.scala.users.group.week2.topic
 
-import karazin.scala.users.group.week1.topic.model.User.UserId
+import karazin.scala.users.group.week2.topic.model.User.UserId
 
 import java.util.UUID
 
